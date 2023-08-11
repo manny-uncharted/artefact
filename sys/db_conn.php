@@ -1,9 +1,9 @@
 <?php
 
 $hostname = "localhost";
-$username = "root";
+$username = "manny";
 $password = "";
-$database = "db_dvd_sys";
+$database = "artefact";
 
 $connection = mysql_connect($hostname,$username,$password);
 
