@@ -11,59 +11,59 @@ include('sys/dash_img.php');
     
 </head>
 
-  <body>
+<body>
 
-          <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">Dashboard</h1>
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <h1 class="page-header">Dashboard</h1>
 
-          <div class="row placeholders">
-            <div class="col-xs-6 col-sm-3">
-              <img class="img-responsive" src="<?php echo $path . $img1 ?>" alt="" />
-              <h4>Label</h4>
-              <span class="text-muted">Test</span>
-            </div>
-            <div class="col-xs-6 col-sm-3">
-              <img class="img-responsive" src="<?php echo $path . $img2 ?>" alt="" />
-              <h4>Label</h4>
-              <span class="text-muted">Test</span>
-            </div>
-            <div class="col-xs-6 col-sm-3">
-              <img class="img-responsive" src="<?php echo $path . $img3 ?>" alt="" />
-              <h4>Label</h4>
-              <span class="text-muted">Test</span>
-            </div>
-            <div class="col-xs-6 col-sm-3">
-              <img class="img-responsive" src="<?php echo $path . $img4 ?>" alt="" />
-              <h4>Label</h4>
-              <span class="text-muted">Test</span>
-            </div>
-          </div>
+    <div class="row placeholders">
+        <?php
+        $query = "SELECT * FROM tbl_movies ORDER BY RAND() LIMIT 4";
+        $result = $connection->query($query);
 
-          <h2 class="sub-header">Hot Pick </h2>
-          <div class="table-responsive">
-          
-          <?php
+        while ($row = $result->fetch_assoc()) {
+            $movie_id = $row['movie_id'];
+            $movie_title = $row['movie_title'];
+            $movie_cover = $row['movie_cover'];
 
-            $query = "SELECT * FROM tbl_movies order by rand() limit 0,10"; 
-            $result = $connection->query($query);
+            echo '<div class="col-xs-6 col-sm-3">';
+            echo '<a href="movie_description.php?id=' . $movie_id . '">';
+            echo '<img class="img-responsive" src="' . $movie_cover . '" alt="' . $movie_title . '" />';
+            echo '</a>';
+            echo '<h4>' . $movie_title . '</h4>';
+            echo '<span class="text-muted">Test</span>';
+            echo '</div>';
+        }
+        ?>
+    </div>
 
-            echo '<table class="table table-hover">'; 
-            echo '<tr><td>Movie ID</td> <td>Title</td> <td>Year</td>  <td>Rating</td> <td>Action</td></tr>'; 
-            while($row = $result->fetch_assoc()){ 
+    <h2 class="sub-header">Hot Pick</h2>
+    <div class="table-responsive">
+        <?php
+        $query = "SELECT * FROM tbl_movies ORDER BY RAND() LIMIT 10";
+        $result = $connection->query($query);
 
-                if ($result->num_rows == "2") {
-                    break;
-                }
+        echo '<table class="table table-hover">';
+        echo '<tr><td>Movie ID</td><td>Title</td><td>Year</td><td>Rating</td><td>Action</td></tr>';
+        while ($row = $result->fetch_assoc()) {
+            $movie_id = $row['movie_id'];
+            $movie_title = $row['movie_title'];
+            $movie_year = $row['movie_year'];
+            $movie_rating = $row['movie_rating'];
 
-                echo "<tr><td>" . $row['movie_id'] . "</td><td>" . $row['movie_title'] . "</td> <td>" . $row['movie_year'] . "</td> <td>" . $row['movie_rating'] . "</td> <td>Lend</td> </tr>";
-            }
+            echo '<tr>';
+            echo '<td>' . $movie_id . '</td>';
+            echo '<td>' . $movie_title . '</td>';
+            echo '<td>' . $movie_year . '</td>';
+            echo '<td>' . $movie_rating . '</td>';
+            echo '<td><a href="movie_description.php?id=' . $movie_id . '">Lend</a></td>';
+            echo '</tr>';
+        }
 
-            echo "</table>";
+        echo '</table>';
+        ?>
+    </div>
+</div>
 
-          ?>
-          
-          </div>
-        
-        </div>
 </body>
 </html>

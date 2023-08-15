@@ -4,7 +4,37 @@ $hostname = "localhost";
 $username = "root";
 $password = "";
 $database = "";
+
+$conn = mysqli_connect($hostname, $username, $password, $database);
+
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+if (isset($_POST['submit'])) {
+    $user_name = $_POST['user_name'];
+    $password = $_POST['password'];
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $user_email = $_POST['user_email'];
+    $user_add = $_POST['user_add'];
+    $user_tp = $_POST['user_tp'];
+    $user_nic = $_POST['user_nic'];
+
+    $sql = "INSERT INTO users (user_name, password, first_name, last_name, user_email, user_add, user_tp, user_nic) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare($conn, $sql);
+
+    mysqli_stmt_bind_param($stmt, "ssssssss", $user_name, $password, $first_name, $last_name, $user_email, $user_add, $user_tp, $user_nic);
+    mysqli_stmt_execute($stmt);
+
+    mysqli_stmt_close($stmt);
+
+    echo "User registered successfully!";
+}
+
+mysqli_close($conn);
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>

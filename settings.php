@@ -24,6 +24,9 @@ if (isset($_POST['delete'])) {
 
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "s", $deleteuser);
+    session_destroy();
+
+    header('Location: index.php');	
 
     if (mysqli_stmt_execute($stmt)) {
         echo "Record deleted successfully";

@@ -67,7 +67,7 @@ $connection->close();
                     <label>Movie Title</label>
                     <div class="input-group">
                         <input type="text" class="form-control" name="movie_title"  id="movie_title" placeholder="" required>
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>  
+                        <span class="input-group-addon"></span>  
                     </div>
                 </div>
 
@@ -75,7 +75,7 @@ $connection->close();
                     <label>Movie Year</label>
                     <div class="input-group">
                         <input type="text" class="form-control" name="movie_year" id="movie_year" placeholder="" required>
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        <span class="input-group-addon"></span>
                     </div>
                 </div>
                 
@@ -83,7 +83,7 @@ $connection->close();
                     <label>Movie Rating</label>
                     <div class="input-group">
                         <input type="text" class="form-control" name="movie_rating" id="movie_rating" placeholder="Enter First Name" required>
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        <span class="input-group-addon"></span>
                     </div>
                 </div>
                  
@@ -96,12 +96,12 @@ $connection->close();
                                 <option value="dvd">DVD</option>
                                 <option value="cd">CD</option>
                             </select> 
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        <span class="input-group-addon"></span>
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <label>Movie Genere</label>
+                    <label>Movie Genre</label>
                     <div class="input-group">
                             <select id="movie_genere" name="movie_genere" class="form-control">
                                     <option value="">Select</option>
@@ -112,23 +112,24 @@ $connection->close();
                                     <option value="horror">Horror</option>
                                     <option value="scfi">Sci-Fi</option>
                             </select>   
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        <span class="input-group-addon"></span>
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label>Movie Cover</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" id="movie_cover" name="movie_cover" placeholder="" required>
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        <input type="file" class="form-control" id="movie_cover" name="movie_cover" accept="image/*" required>
+                        <span class="input-group-addon"></span>
                     </div>
                 </div>
+
                 
                 <div class="form-group">
-                    <label>Movie Deatails</label>
+                    <label>Movie Information</label>
                     <div class="input-group">
                         <input type="textbox" class="form-control" id="movie_detail" name="movie_detail" placeholder="Enter Contact Number"  required>
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        <span class="input-group-addon"></span>
                     </div>
                 </div>
                 
@@ -136,7 +137,7 @@ $connection->close();
                     <label>Movie Value</label>
                     <div class="input-group">
                         <input type="textbox" class="form-control" id="movie_value" name="movie_value" placeholder="Enter Contact Number"  required>
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        <span class="input-group-addon"></span>
                     </div>
                 </div>
                 
