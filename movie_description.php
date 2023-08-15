@@ -1,5 +1,7 @@
 <?php
 include('sys/db_conn.php');
+include('nav.php');
+
 ?>
 
 <!DOCTYPE html>
@@ -12,6 +14,15 @@ include('sys/db_conn.php');
             background-color: #f2f2f2;
             margin: 0;
             padding: 20px;
+            max-width: 80%;
+            overflow-x: hidden;
+        }
+
+        @media (min-width: 768px) {
+            body {
+                padding-left: 500px;
+                padding-top: 100px;
+            }
         }
 
         h1 {
@@ -72,8 +83,8 @@ if (isset($_GET['id'])) {
         echo "<p><strong>Genre:</strong> " . $row['movie_genere'] . "</p>";
         echo "<p><strong>Rating:</strong> " . $row['movie_rating'] . "</p>";
         echo "<p><strong>Type:</strong> " . $row['movie_type'] . "</p>";
-        echo "<img src='" . $row['movie_cover'] . "' alt='" . $row['movie_title'] . "'>";
-        echo "<p><strong>Detail:</strong> " . $row['movie_detail'] . "</p>";
+        echo "<img src='" . $row['movie_detail'] . "' alt='" . $row['movie_title'] . "'>";
+        // echo "<p><strong>Detail:</strong> " . $row['movie_detail'] . "</p>";
         echo "<p><strong>Value:</strong> " . $row['movie_value'] . "</p>";
         echo "</div>";
     } else {

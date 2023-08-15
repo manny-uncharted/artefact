@@ -48,7 +48,6 @@ session_start();
             <li class="active"><a href="dashboard.php">Home<span class="sr-only">(current)</span></a></li>
             <li><a href="moviemanager.php">Manage Movies</a></li>
             <li><a href="usermanager.php">Manage Users</a></li>
-            <li><a href="#">Export</a></li>
           </ul>
           <ul class="nav nav-sidebar">
             <li><a href="movies.php">All Movies</a></li>
