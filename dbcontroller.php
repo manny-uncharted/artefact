@@ -1,31 +1,27 @@
 <?php
-
-
 class DBController {
 	private $host = "localhost";
-	private $user = "manny";
+	private $user = "root";
 	private $password = "";
 	private $database = "artefact";
+	private $conn;
 	
 	function __construct() {
-		$conn = $this->connectDB();
-		if(!empty($conn)) {
-			$this->selectDB($conn);
-		}
+		$this->conn = $this->connectDB();
 	}
 	
 	function connectDB() {
-		$conn = mysql_connect($this->host,$this->user,$this->password);
+		$conn = new mysqli($this->host, $this->user, $this->password, $this->database);
+		if ($conn->connect_error) {
+			die("Connection failed: " . $conn->connect_error);
+		}
 		return $conn;
 	}
 	
-	function selectDB($conn) {
-		mysql_select_db($this->database,$conn);
-	}
-	
 	function runQuery($query) {
-		$result = mysql_query($query);
-		while($row=mysql_fetch_assoc($result)) {
+		$result = $this->conn->query($query);
+		$resultset = array();
+		while($row = $result->fetch_assoc()) {
 			$resultset[] = $row;
 		}		
 		if(!empty($resultset))
@@ -33,8 +29,8 @@ class DBController {
 	}
 	
 	function numRows($query) {
-		$result  = mysql_query($query);
-		$rowcount = mysql_num_rows($result);
+		$result  = $this->conn->query($query);
+		$rowcount = $result->num_rows;
 		return $rowcount;	
 	}
 }
