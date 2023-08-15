@@ -123,46 +123,54 @@ include('sys/db_conn.php');
 
  <div class="table-responsive">
           
-        <?php
-            $servername = "localhost";
-            $database = "artefact";
-            $username = "root";
-            $password = "";
+    <?php
+    $servername = "localhost";
+    $database = "artefact";
+    $username = "root";
+    $password = "";
 
-            $conn = mysqli_connect($servername, $username, $password, $database);
+    $conn = mysqli_connect($servername, $username, $password, $database);
 
-            if (!$conn) {
-                die("Connection failed: " . mysqli_connect_error());
-            }
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
 
-            if (isset($_POST['submit'])) {
-                $type = $_POST['type'];
-                $genere = $_POST['genere'];
-            }
+    if (isset($_POST['submit'])) {
+        $type = $_POST['type'];
+        $genre = $_POST['genere'];
+    }
 
-            if (!empty($_POST['search'])) {
-                $term = mysqli_real_escape_string($conn, $_POST['search']);
+    if (!empty($_POST['search'])) {
+        $term = mysqli_real_escape_string($conn, $_POST['search']);
 
-                $sql = "SELECT * FROM tbl_movies WHERE movie_title LIKE ? AND movie_type LIKE ? AND movie_genere LIKE ?";
-                $stmt = mysqli_prepare($conn, $sql);
-                mysqli_stmt_bind_param($stmt, "sss", "%" . $term . "%", "%" . $type . "%", "%" . $genere . "%");
-                mysqli_stmt_execute($stmt);
+        $sql = "SELECT * FROM tbl_movies WHERE movie_title LIKE ? AND movie_type LIKE ? AND movie_genere LIKE ?";
+        $stmt = mysqli_prepare($conn, $sql);
 
-                $result = mysqli_stmt_get_result($stmt);
+        // Assign the values to separate variables
+        $likeTerm = "%" . $term . "%";
+        $likeType = "%" . $type . "%";
+        $likeGenre = "%" . $genre . "%";
 
-                echo '<h3>Search results for "' . $term . '"</h3>';
-                echo '<table class="table table-hover">';
-                echo '<tr><td>Movie ID</td> <td>Title</td> <td>Year</td> <td>Rating</td> <td>Type</td> <td>Action</td></tr>';
+        // Pass the variables as references to mysqli_stmt_bind_param()
+        mysqli_stmt_bind_param($stmt, "sss", $likeTerm, $likeType, $likeGenre);
+        mysqli_stmt_execute($stmt);
 
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<tr><td>" . $row['movie_id'] . "</td><td>" . $row['movie_title'] . "</td> <td>" . $row['movie_year'] . "</td> <td>" . $row['movie_rating'] . "</td> <td>" . $row['movie_type'] . "</td> <td>Lend</td> </tr>";
-                }
+        $result = mysqli_stmt_get_result($stmt);
 
-                echo "</table>";
-            }
+        echo '<h3>Search results for "' . $term . '"</h3>';
+        echo '<table class="table table-hover">';
+        echo '<tr><td>Movie ID</td> <td>Title</td> <td>Year</td> <td>Rating</td> <td>Type</td> <td>Action</td></tr>';
 
-            // mysqli_close($conn);
-        ?>
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "<tr><td>" . $row['movie_id'] . "</td><td>" . $row['movie_title'] . "</td> <td>" . $row['movie_year'] . "</td> <td>" . $row['movie_rating'] . "</td> <td>" . $row['movie_type'] . "</td> <td>Lend</td> </tr>";
+        }
+
+        echo "</table>";
+    }
+
+    mysqli_close($conn);
+    ?>
+
 
           </div>
 
