@@ -48,18 +48,21 @@ $connection = new mysqli($hostname,$username,$password, $database);
          
       </form>
       
-    <?php
-        if (isset($_POST['submit']))
+	  <?php
+		if (isset($_POST['submit']))
 		{
 			$user_name = $_POST['user_name'];
 			$password = $_POST['password'];	
-					
-			$select_user= "select count(user_id) as log,user_id,user_name,first_name,last_name,user_email,user_add,user_tp,user_nic,user_balance from tbl_user_detail where user_name = '$user_name' and password = '$password'";
-	
-			$result = mysql_query($select_user);
 
-			$row = mysql_fetch_assoc($result);
-			
+			// Create a new instance of DBController
+			$db = new DBController();
+
+			$select_user= "select count(user_id) as log,user_id,user_name,first_name,last_name,user_email,user_add,user_tp,user_nic,user_balance from tbl_user_detail where user_name = '$user_name' and password = '$password'";
+
+			$result = $db->runQuery($select_user);
+
+			$row = $result[0];
+
 			if($row['log']==1)
 			{
 				session_start();
@@ -72,7 +75,7 @@ $connection = new mysqli($hostname,$username,$password, $database);
 				$_SESSION['user_tp'] = $row['user_tp'];
 				$_SESSION['user_nic'] = $row['user_nic'];
 				$_SESSION['user_balance'] = $row['user_balance'];
-				
+
 				echo '<BR>You are logged in';
 				header('Location: dashboard.php');	
 			}
@@ -80,10 +83,9 @@ $connection = new mysqli($hostname,$username,$password, $database);
 			{
 				echo '<BR>Incorrect Combination';
 			}
-				
 		}
-			
 	?>
+
 		 
     
     </div>
