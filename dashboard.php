@@ -43,24 +43,24 @@ include('sys/dash_img.php');
           <div class="table-responsive">
           
           <?php
-		  
-          	$query = "SELECT * FROM tbl_movies order by rand() limit 0,10"; 
-			$result = mysql_query($query);
 
-			echo '<table class="table table-hover">'; 
-			echo '<tr><td>Movie ID</td> <td>Title</td> <td>Year</td>  <td>Rating</td> <td>Action</td></tr>'; 
-			while($row = mysql_fetch_array($result)){ 
-			
-			 if (count($result) == "2") {
-					break;
-				}
-			
-			echo "<tr><td>" . $row['movie_id'] . "</td><td>" . $row['movie_title'] . "</td> <td>" . $row['movie_year'] . "</td> <td>" . $row['movie_rating'] . "</td> <td>Lend</td> </tr>";
-			}
-			
-			echo "</table>";
-          
-		  ?>
+            $query = "SELECT * FROM tbl_movies order by rand() limit 0,10"; 
+            $result = $connection->query($query);
+
+            echo '<table class="table table-hover">'; 
+            echo '<tr><td>Movie ID</td> <td>Title</td> <td>Year</td>  <td>Rating</td> <td>Action</td></tr>'; 
+            while($row = $result->fetch_assoc()){ 
+
+                if ($result->num_rows == "2") {
+                    break;
+                }
+
+                echo "<tr><td>" . $row['movie_id'] . "</td><td>" . $row['movie_title'] . "</td> <td>" . $row['movie_year'] . "</td> <td>" . $row['movie_rating'] . "</td> <td>Lend</td> </tr>";
+            }
+
+            echo "</table>";
+
+          ?>
           
           </div>
         

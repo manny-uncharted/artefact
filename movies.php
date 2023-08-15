@@ -123,42 +123,47 @@ include('sys/db_conn.php');
 
  <div class="table-responsive">
           
-		<?php
-                
-				if (isset($_POST['submit']))
-					{
-						$type = $_POST['type'];
-						$genere = $_POST['genere'];
-					}
-				else
-					{
-						
-					}
-	
-								
-				if (!empty($_POST['search'])) {
-                
-				$term = mysql_real_escape_string($_POST['search']);     
-				
-                $sql = "SELECT * FROM tbl_movies WHERE movie_title LIKE '%".$term."%' and movie_type LIKE '%".$type."%' and movie_genere LIKE '%".$genere."%'"; 
-                $r_query = mysql_query($sql); 
-				
-                echo '<h3>Search results for "'.$term.'"</h3>';
-				echo '<table class="table table-hover">'; 
-				echo '<tr><td>Movie ID</td> <td>Title</td> <td>Year</td> <td>Rating</td> <td>Type</td> <td>Action</td></tr>'; 
-				
-                while ($row = mysql_fetch_array($r_query)){  
-                
-				echo "<tr><td>" . $row['movie_id'] . "</td><td>" . $row['movie_title'] . "</td> <td>" . $row['movie_year'] . "</td> <td>" . $row['movie_rating'] . "</td> <td>" . $row['movie_type'] . "</td> <td>Lend</td> </tr>";  
-                
-                    	} 
+        <?php
+            $servername = "localhost";
+            $database = "artefact";
+            $username = "root";
+            $password = "";
 
+            $conn = mysqli_connect($servername, $username, $password, $database);
+
+            if (!$conn) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+
+            if (isset($_POST['submit'])) {
+                $type = $_POST['type'];
+                $genere = $_POST['genere'];
+            }
+
+            if (!empty($_POST['search'])) {
+                $term = mysqli_real_escape_string($conn, $_POST['search']);
+
+                $sql = "SELECT * FROM tbl_movies WHERE movie_title LIKE ? AND movie_type LIKE ? AND movie_genere LIKE ?";
+                $stmt = mysqli_prepare($conn, $sql);
+                mysqli_stmt_bind_param($stmt, "sss", "%" . $term . "%", "%" . $type . "%", "%" . $genere . "%");
+                mysqli_stmt_execute($stmt);
+
+                $result = mysqli_stmt_get_result($stmt);
+
+                echo '<h3>Search results for "' . $term . '"</h3>';
+                echo '<table class="table table-hover">';
+                echo '<tr><td>Movie ID</td> <td>Title</td> <td>Year</td> <td>Rating</td> <td>Type</td> <td>Action</td></tr>';
+
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<tr><td>" . $row['movie_id'] . "</td><td>" . $row['movie_title'] . "</td> <td>" . $row['movie_year'] . "</td> <td>" . $row['movie_rating'] . "</td> <td>" . $row['movie_type'] . "</td> <td>Lend</td> </tr>";
                 }
 
-				echo "</table>";
-				
-                ?>          
-        
+                echo "</table>";
+            }
+
+            // mysqli_close($conn);
+        ?>
+
           </div>
 
 

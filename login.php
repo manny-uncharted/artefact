@@ -14,11 +14,11 @@
 <?php
 
 $host = "localhost";
-$user = "root";
-$password = "";
+$user = "manny";
+$password = "manny";
 $database = "artefact";
 
-$connection = new mysqli($hostname,$username,$password, $database);
+$connection = new mysqli($host,$user,$password, $database);
 
 // mysql_select_db($database,$connection);
 

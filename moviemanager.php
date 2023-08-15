@@ -10,42 +10,43 @@ include('nav.php');
 $hostname = "localhost";
 $username = "root";
 $password = "";
-$database = "db_dvd_sys";
+$database = "artefact";
 
-$connection = mysql_connect($hostname,$username,$password);
-mysql_select_db($database);
+$connection = new mysqli($hostname, $username, $password, $database);
 
-//echo"<div style='marin-right:100px;'>".('test')."</div>";
-		if (isset($_POST['submit']))
-			{
-			
-			$movie_title = $_POST['movie_title'];
-			$movie_year = $_POST['movie_year'];	
-			$movie_rating = $_POST['movie_rating'];
-			$movie_type = $_POST['movie_type'];
-			$movie_genere = $_POST['movie_genere'];
-			$movie_cover = $_POST['movie_cover'];
-			$movie_detail = $_POST['movie_detail'];
-			$movie_value = $_POST['movie_value'];
-			
+if ($connection->connect_error) {
+    die("Connection failed: " . $connection->connect_error);
+}
 
-										
-	$insert_details = "insert into tbl_movies (movie_title, movie_year, movie_rating, movie_type, movie_genere, movie_cover, movie_detail, movie_value) values('$movie_title', '$movie_year', '$movie_rating', '$movie_type', '$movie_genere', '$movie_cover', '$movie_detail', '$movie_value')";
-	//var_dump($movie_title);
-	
-	$addmovie = mysql_query($insert_details,$connection);
-	$admin = "lahiru";
-		if($_SESSION['user_name'] == $admin)
-			{		
-				echo '<div style="margin-left:100px;">Data inserted</div>';				
-			}
-	
-			else
-				{
-				echo '<div style="margin-left:100px;">Error! Please check all inputs.</div>';	
-				}
-			}
+if (isset($_POST['submit'])) {
+    $movie_title = $_POST['movie_title'];
+    $movie_year = $_POST['movie_year'];
+    $movie_rating = $_POST['movie_rating'];
+    $movie_type = $_POST['movie_type'];
+    $movie_genre = $_POST['movie_genre'];
+    $movie_cover = $_POST['movie_cover'];
+    $movie_detail = $_POST['movie_detail'];
+    $movie_value = $_POST['movie_value'];
+
+    $insert_details = "INSERT INTO tbl_movies (movie_title, movie_year, movie_rating, movie_type, movie_genre, movie_cover, movie_detail, movie_value) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+    $stmt = $connection->prepare($insert_details);
+    $stmt->bind_param("ssssssss", $movie_title, $movie_year, $movie_rating, $movie_type, $movie_genre, $movie_cover, $movie_detail, $movie_value);
+    $stmt->execute();
+
+    $admin = "lahiru";
+    if ($_SESSION['user_name'] == $admin) {
+        echo '<div style="margin-left:100px;">Data inserted</div>';
+    } else {
+        echo '<div style="margin-left:100px;">Error! Please check all inputs.</div>';
+    }
+
+    $stmt->close();
+}
+
+$connection->close();
 ?>
+
 
 </head>
 

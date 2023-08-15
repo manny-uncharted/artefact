@@ -15,59 +15,55 @@
 
 </head>
 <?php
-        
 $hostname = "localhost";
 $username = "root";
 $password = "";
-$database = "db_dvd_sys";
+$database = "artefact";
 
-$connection = mysql_connect($hostname,$username,$password);
+$connection = new mysqli($hostname, $username, $password, $database);
 
-mysql_select_db($database,$connection);		
-		
-		if (isset($_POST['submit']))
-		{
-			
-			$user_name = $_POST['user_name'];
-			$password = $_POST['password'];	
-			$first_name = $_POST['first_name'];
-			$last_name = $_POST['last_name'];
-			$user_email = $_POST['user_email'];
-			$user_add = $_POST['user_add'];
-			$user_tp = $_POST['user_tp'];
-			$user_nic = $_POST['user_nic'];
-			$user_balance = $_POST['user_balance'];
-							
-	$insert_details = "insert into tbl_user_detail (user_name, password, first_name, last_name, user_email, user_add, user_tp, user_nic,user_balance) values('$user_name', '$password', '$first_name', '$last_name', '$user_email', '$user_add', '$user_tp', '$user_nic','500')";
-	
-	$sql = "SELECT * FROM tbl_user_detail WHERE user_name = '$user_name'";
-	$result = mysql_query($sql) or die(mysql_error());
-	$numrows = mysql_num_rows($result);
-		
-			if(mysql_query($insert_details,$connection) && $numrows == 0 )
-			{
-			session_start();
-			$_SESSION['user_name'] = $row['user_name'];
-			$_SESSION['password'] = $row['password'];
-			$_SESSION['first_name'] = $row['first_name'];
-			$_SESSION['last_name'] = $row['last_name'];
-			$_SESSION['user_email'] = $row['user_email'];
-			$_SESSION['user_add'] = $row['user_add'];
-			$_SESSION['user_tp'] = $row['user_tp'];
-			$_SESSION['user_nic'] = $row['user_nic'];
-			$_SESSION['user_balance'] = $row['user_balance'];
-				
-				echo 'Data inserted';
-				header('Location: dashboard.php');	
-				
-			}
-			elseif($numrows > 0){
-				echo '<div class="alert alert-danger"><span class="glyphicon glyphicon-remove"></span><strong> Error! Username alredy exist.</strong></div>';
-			}	
-			else
-			{
-				echo '<div class="alert alert-danger"><span class="glyphicon glyphicon-remove"></span><strong> Error! Please check all inputs.</strong></div>';	
-			}
-		}
-			
+if ($connection->connect_error) {
+    die("Connection failed: " . $connection->connect_error);
+}
+
+if (isset($_POST['submit'])) {
+    $user_name = $_POST['user_name'];
+    $password = $_POST['password'];
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $user_email = $_POST['user_email'];
+    $user_add = $_POST['user_add'];
+    $user_tp = $_POST['user_tp'];
+    $user_nic = $_POST['user_nic'];
+    $user_balance = $_POST['user_balance'];
+
+    $insert_details = "INSERT INTO tbl_user_detail (user_name, password, first_name, last_name, user_email, user_add, user_tp, user_nic, user_balance) VALUES ('$user_name', '$password', '$first_name', '$last_name', '$user_email', '$user_add', '$user_tp', '$user_nic', '500')";
+
+    $sql = "SELECT * FROM tbl_user_detail WHERE user_name = '$user_name'";
+    $result = $connection->query($sql);
+    $numrows = $result->num_rows;
+
+    if ($connection->query($insert_details) === TRUE && $numrows == 0) {
+        session_start();
+        $_SESSION['user_name'] = $user_name;
+        $_SESSION['password'] = $password;
+        $_SESSION['first_name'] = $first_name;
+        $_SESSION['last_name'] = $last_name;
+        $_SESSION['user_email'] = $user_email;
+        $_SESSION['user_add'] = $user_add;
+        $_SESSION['user_tp'] = $user_tp;
+        $_SESSION['user_nic'] = $user_nic;
+        $_SESSION['user_balance'] = $user_balance;
+
+        echo 'Data inserted';
+        header('Location: dashboard.php');
+        exit;
+    } elseif ($numrows > 0) {
+        echo '<div class="alert alert-danger"><span class="glyphicon glyphicon-remove"></span><strong> Error! Username already exists.</strong></div>';
+    } else {
+        echo '<div class="alert alert-danger"><span class="glyphicon glyphicon-remove"></span><strong> Error! Please check all inputs.</strong></div>';
+    }
+}
+
+$connection->close();
 ?>

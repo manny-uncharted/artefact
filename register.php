@@ -119,7 +119,7 @@ $database = "";
                 </div>
                 
                 <div class="form-group">
-                    <label>NIC</label>
+                    <label>NIN Number</label>
                     <div class="input-group">
                         <input type="text" class="form-control" id="user_nic" name="user_nic" placeholder="Enter NIC Number" required>
                         <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
