@@ -33,7 +33,6 @@ session_start();
           <ul class="nav navbar-nav navbar-right">
             <li><a href="dashboard.php"><?php echo $_SESSION['first_name'];?>'s Dashboard</a></li>
             <li><a href="profile.php">Profile</a></li>
-            <li><a href="help.php">Help</a></li>
             <li><a href="settings.php">Settings</a></li>
             <li><a href="logout.php">Logout</a></li>
           </ul>
@@ -55,11 +54,6 @@ session_start();
             <li><a href="">Horor</a></li>
             <li><a href="">Comedy</a></li>
             <li><a href="">Animation</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Top Rated</a></li>
-            <li><a href="">Most Wached</a></li>
-            <li><a href="">Reasenty Added</a></li>
           </ul>
         </div>
       </div>

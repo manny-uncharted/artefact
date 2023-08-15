@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Artefact | Movie Manager</title>
+<title>Artefact | Add Movies</title>
 
 <?php
 include('nav.php');
