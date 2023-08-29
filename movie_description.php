@@ -66,7 +66,7 @@ if (isset($_GET['id'])) {
     $movie_id = $_GET['id'];
 
     // Fetch the movie details from the database
-    $query = "SELECT * FROM tbl_movies WHERE movie_id = ?";
+    $query = "SELECT * FROM film WHERE film_id = ?";
     $stmt = $connection->prepare($query);
     $stmt->bind_param("i", $movie_id);
     $stmt->execute();
@@ -78,14 +78,20 @@ if (isset($_GET['id'])) {
 
         // Display the movie details
         echo "<div class='movie-details'>";
-        echo "<h1>" . $row['movie_title'] . "</h1>";
-        echo "<p><strong>Year:</strong> " . $row['movie_year'] . "</p>";
-        echo "<p><strong>Genre:</strong> " . $row['movie_genere'] . "</p>";
-        echo "<p><strong>Rating:</strong> " . $row['movie_rating'] . "</p>";
-        echo "<p><strong>Type:</strong> " . $row['movie_type'] . "</p>";
-        echo "<img src='" . $row['movie_detail'] . "' alt='" . $row['movie_title'] . "'>";
+        echo "<h1>" . $row['title'] . "</h1>";
+        echo "<p><strong>Year Released:</strong> " . $row['release_year'] . "</p>";
+        echo "<p><strong>Description:</strong> " . $row['description'] . "</p>";
+        echo "<p><strong>Rating:</strong> " . $row['rating'] . "</p>";
+        echo "<p><strong>Release Year:</strong> " . $row['release_year'] . "</p>";
+        echo "<img src='" . $row['language_id'] . "' alt='" . $row['title'] . "'>";
+        echo "<p><strong>Language:</strong> " . $row['language_id'] . "</p>";
+        echo "<p><strong>Rental Duration:</strong> " . $row['rental_duration'] . "</p>";
+        echo "<p><strong>Movie Length:</strong> " . $row['length'] . "</p>";
+        echo "<p><strong>Replacement Cost:</strong> " . $row['replacement_cost'] . "</p>";
+        echo "<p><strong>Special Features:</strong> " . $row['special_features'] . "</p>";
+        echo "<p><strong> Last Update:</strong> " . $row['last_update'] . "</p>";
         // echo "<p><strong>Detail:</strong> " . $row['movie_detail'] . "</p>";
-        echo "<p><strong>Value:</strong> " . $row['movie_value'] . "</p>";
+        echo "<p><strong>Rental Rate:</strong> " . $row['rental_rate'] . "</p>";
         echo "</div>";
     } else {
         echo "<p>Movie not found.</p>";

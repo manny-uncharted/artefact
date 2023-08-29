@@ -45,15 +45,11 @@ session_start();
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li class="active"><a href="dashboard.php">Home<span class="sr-only">(current)</span></a></li>
-            <li><a href="moviemanager.php">Manage Movies</a></li>
-            <li><a href="usermanager.php">Manage Users</a></li>
+            <li><a href="add_movie.php">Add Movies</a></li>
+            <!-- <li><a href="usermanager.php">Manage Users</a></li> -->
           </ul>
           <ul class="nav nav-sidebar">
             <li><a href="movies.php">All Movies</a></li>
-            <li><a href="">Action</a></li>
-            <li><a href="">Horor</a></li>
-            <li><a href="">Comedy</a></li>
-            <li><a href="">Animation</a></li>
           </ul>
         </div>
       </div>

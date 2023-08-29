@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Artefact | Add Movies</title>
+<title>Artefact | Update Movie</title>
 
 <?php
 include('nav.php');
@@ -14,37 +14,48 @@ $database = "artefact";
 
 $connection = new mysqli($hostname, $username, $password, $database);
 
+$movie_id = $_GET['id'];
+$select_query = "SELECT * FROM film WHERE film_id = ?";
+$stmt = $connection->prepare($select_query);
+$stmt->bind_param("s", $movie_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$movie = $result->fetch_assoc();
+
+
 if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
-    $movie_title = $_POST['movie_title'];
-    $movie_year = $_POST['movie_year'];
-    $movie_rating = $_POST['movie_rating'];
-    $movie_type = $_POST['movie_type'];
-    $movie_genre = $_POST['movie_genere'];
-    $movie_cover = $_POST['movie_cover'];
-    $movie_detail = $_POST['movie_detail'];
-    $movie_value = $_POST['movie_value'];
+    $movie_title = $_POST['title'];
+    $movie_desc = $_POST['description'];
+    $movie_year = $_POST['release_year'];
+    $movie_language = $_POST['language_id'];
+    $movie_orig_language = $_POST['original_language_id'];
+    $movie_rental_duration = $_POST['rental_duration'];
+    $movie_rental_rate = $_POST['rental_rate'];
+    $movie_length = $_POST['length'];
+    $movie_replacement_cost = $_POST['replacement_cost'];
+    $movie_rating = $_POST['rating'];
+    $movie_special_features = $_POST['special_features'];
+    $movie_last_update = $_POST['last_update'];
 
-    $insert_details = "INSERT INTO tbl_movies (movie_title, movie_year, movie_rating, movie_type, movie_genere, movie_cover, movie_detail, movie_value) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    $stmt = $connection->prepare($insert_details);
-    $stmt->bind_param("ssssssss", $movie_title, $movie_year, $movie_rating, $movie_type, $movie_genre, $movie_cover, $movie_detail, $movie_value);
+
+    $update_query = "UPDATE film SET  title = ?, description = ?, release_year = ?, language_id = ?, original_language_id = ?, rental_duration = ?, rental_rate = ?, length = ?, replacement_cost = ?, rating =?, special_features = ?, last_update =?, WHERE id = ?";
+    $stmt = $connection->prepare($update_query);
+    $stmt->bind_param("sssssssss", $movie_title, $movie_desc, $movie_year, $movie_language, $movie_orig_language, $movie_rental_duration, $movie_rental_duration, $movie_rental_rate, $movie_length, $movie_replacement_cost, $movie_rating, $movie_special_features, $movie_last_update, $movie_id);
 
     if ($stmt->execute()) {
-        $admin = "lahiru";
-        if ($_SESSION['user_name'] == $admin) {
-            echo '<div style="margin-left: 100px;">Data inserted</div>';
-        } else {
-            echo '<div style="margin-left: 100px;">Error! Please check all inputs.</div>';
-        }
+        echo '<div style="margin-left: 100px;">Data updated</div>';
     } else {
         echo '<div style="margin-left: 100px;">Error executing statement: ' . $stmt->error . '</div>';
     }
 
     $stmt->close();
 }
+
+
 
 $connection->close();
 ?>
@@ -54,100 +65,49 @@ $connection->close();
 
 <body>
 
-<div class="col-sm-9 col-md-offset-3 col-md-10 col-md-offset-2 main">
-<h1 class="page-header">Movie Manager</h1>
-<h3 class="page-header">Add Movies</h3>
+    <div class="col-sm-9 col-md-offset-3 col-md-10 col-md-offset-2 main">
+    <h1 class="page-header">Movie Manager</h1>
+    <h3 class="page-header">Update Movies</h3>
 
 
-		<form role="form" action="" method="post">
-            <div class="col-lg-6">
-                <div class="well well-sm"><strong><span class="glyphicon glyphicon-asterisk"> </span>Required Field</strong></div>
-                               
-                <div class="form-group">
-                    <label>Movie Title</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="movie_title"  id="movie_title" placeholder="" required>
-                        <span class="input-group-addon"></span>  
-                    </div>
-                </div>
+    <form role="form" action="" method="post">
+        <div class="col-lg-6">
+            <div class="well well-sm"><strong><span class="glyphicon glyphicon-asterisk"> </span>Required Field</strong></div>
 
-                <div class="form-group">
-                    <label>Movie Year</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="movie_year" id="movie_year" placeholder="" required>
-                        <span class="input-group-addon"></span>
-                    </div>
+            <div class="form-group">
+                <label>Film Title</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="title" id="title" value="<?php echo $movie['title']; ?>" required>
+                    <span class="input-group-addon"></span>
                 </div>
-                
-                <div class="form-group">
-                    <label>Movie Rating</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="movie_rating" id="movie_rating" placeholder="Enter First Name" required>
-                        <span class="input-group-addon"></span>
-                    </div>
-                </div>
-                 
-                 <div class="form-group">
-                    <label>Movie Type</label>
-                    <div class="input-group">
-                            <select id="movie_type" name="movie_type" class="form-control">
-                            	<option value="" >Select</option>
-                                <option value="bray" >Blu-Ray</option>
-                                <option value="dvd">DVD</option>
-                                <option value="cd">CD</option>
-                            </select> 
-                        <span class="input-group-addon"></span>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Movie Genre</label>
-                    <div class="input-group">
-                            <select id="movie_genere" name="movie_genere" class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="action">Action</option>
-                                    <option value="adventure">Adventure</option>
-                                    <option value="animation">Animation</option>
-                                    <option value="comedy">Comedy</option>
-                                    <option value="horror">Horror</option>
-                                    <option value="scfi">Sci-Fi</option>
-                            </select>   
-                        <span class="input-group-addon"></span>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Movie Cover</label>
-                    <div class="input-group">
-                        <input type="file" class="form-control" id="movie_cover" name="movie_cover" accept="image/*" required>
-                        <span class="input-group-addon"></span>
-                    </div>
-                </div>
-
-                
-                <div class="form-group">
-                    <label>Movie Information</label>
-                    <div class="input-group">
-                        <input type="textbox" class="form-control" id="movie_detail" name="movie_detail" placeholder="Enter Contact Number"  required>
-                        <span class="input-group-addon"></span>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Movie Value</label>
-                    <div class="input-group">
-                        <input type="textbox" class="form-control" id="movie_value" name="movie_value" placeholder="Enter Contact Number"  required>
-                        <span class="input-group-addon"></span>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-				<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-info pull-right" >
-                <input type="reset" name="reset" id="reset" value="Reset" class="btn btn-info pull-right" >
-                </div>
-                
             </div>
-        </form>
+
+            <div class="form-group">
+                <label>Description</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="description" id="description" value="<?php echo $movie['description']; ?>" required>
+                    <span class="input-group-addon"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Release Year</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="release_year" id="release_year" value="<?php echo $movie['release_year']; ?>" required>
+                    <span class="input-group-addon"></span>
+                </div>
+            </div>
+
+            <!-- Add similar form groups for the rest of the fields -->
+
+            <div class="form-group">
+                <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-info pull-right">
+                <input type="reset" name="reset" id="reset" value="Reset" class="btn btn-info pull-right">
+                <a href="delete_movie.php?id=<?php echo $movie['film_id']; ?>" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </form>
+
 
 
 

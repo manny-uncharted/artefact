@@ -18,17 +18,18 @@ include('sys/dash_img.php');
 
     <div class="row placeholders">
         <?php
-        $query = "SELECT * FROM tbl_movies ORDER BY RAND() LIMIT 4";
+        $query = "SELECT * FROM film ORDER BY RAND() LIMIT 4";
         $result = $connection->query($query);
 
         while ($row = $result->fetch_assoc()) {
-            $movie_id = $row['movie_id'];
-            $movie_title = $row['movie_title'];
-            $movie_cover = $row['movie_cover'];
+            $movie_id = $row['film_id'];
+            $movie_title = $row['title'];
+            $movie_desc = $row['description'];
+            
 
             echo '<div class="col-xs-6 col-sm-3">';
             echo '<a href="movie_description.php?id=' . $movie_id . '">';
-            echo '<img class="img-responsive" src="' . $movie_cover . '" alt="' . $movie_title . '" />';
+            echo '<img class="img-responsive" src="' . $movie_desc . '" alt="' . $movie_title . '" />';
             echo '</a>';
             echo '<h4>' . $movie_title . '</h4>';
             echo '<span class="text-muted">Test</span>';
@@ -40,23 +41,24 @@ include('sys/dash_img.php');
     <h2 class="sub-header">Hot Pick</h2>
     <div class="table-responsive">
         <?php
-        $query = "SELECT * FROM tbl_movies ORDER BY RAND() LIMIT 10";
+        $query = "SELECT * FROM film ORDER BY RAND() LIMIT 10";
         $result = $connection->query($query);
 
         echo '<table class="table table-hover">';
-        echo '<tr><td>Movie ID</td><td>Title</td><td>Year</td><td>Rating</td><td>Action</td></tr>';
+        echo '<tr><td>Movie ID</td><td>Title</td><td>Year</td><td>Rating</td><td>Edit</td><td>Delete</td></tr>';
         while ($row = $result->fetch_assoc()) {
-            $movie_id = $row['movie_id'];
-            $movie_title = $row['movie_title'];
-            $movie_year = $row['movie_year'];
-            $movie_rating = $row['movie_rating'];
+            $movie_id = $row['film_id'];
+            $movie_title = $row['title'];
+            $movie_year = $row['release_year'];
+            $movie_rating = $row['rating'];
 
             echo '<tr>';
             echo '<td>' . $movie_id . '</td>';
             echo '<td>' . $movie_title . '</td>';
             echo '<td>' . $movie_year . '</td>';
             echo '<td>' . $movie_rating . '</td>';
-            echo '<td><a href="movie_description.php?id=' . $movie_id . '">Lend</a></td>';
+            echo '<td><a href="moviemanager.php?id=' . $movie_id . '">Edit</a></td>';
+            echo '<td><a href="delete_movie.php?id=' . $movie_id . '">Delete</a></td>';
             echo '</tr>';
         }
 
