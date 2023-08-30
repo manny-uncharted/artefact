@@ -14,8 +14,8 @@
 <?php
 
 $host = "localhost";
-$user = "manny";
-$password = "manny";
+$user = "root";
+$password = "";
 $database = "artefact";
 
 $connection = new mysqli($host,$user,$password, $database);
