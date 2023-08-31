@@ -8,7 +8,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "artefact";
+$dbname = "sakila-movie-db";
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 
 if (!$conn) {
@@ -20,7 +20,7 @@ include('nav.php');
 $deleteuser = $_SESSION['user_name'];
 
 if (isset($_POST['delete'])) {
-    $sql = "DELETE FROM tbl_user_detail WHERE user_name = ?";
+    $sql = "DELETE FROM staff WHERE username = ?";
 
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "s", $deleteuser);

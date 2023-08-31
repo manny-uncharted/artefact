@@ -4,7 +4,6 @@
 <?php
 include('nav.php');
 include('sys/db_conn.php');
-include('sys/dash_img.php'); 
 ?>
 
 <title>Artefact | Dashboard</title>

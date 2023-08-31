@@ -18,52 +18,65 @@
 $hostname = "localhost";
 $username = "root";
 $password = "";
-$database = "artefact";
+$database = "sakila-movie-db";
 
+// Create connection
 $connection = new mysqli($hostname, $username, $password, $database);
 
+// Check connection
 if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 
 if (isset($_POST['submit'])) {
     $user_name = $_POST['user_name'];
-    $password = $_POST['password'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash the password
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
     $user_email = $_POST['user_email'];
-    $user_add = $_POST['user_add'];
-    $user_tp = $_POST['user_tp'];
-    $user_nic = $_POST['user_nic'];
-    $user_balance = $_POST['user_balance'];
+    $store_id = 1;
+    $address_id = 3;
 
-    $insert_details = "INSERT INTO tbl_user_detail (user_name, password, first_name, last_name, user_email, user_add, user_tp, user_nic, user_balance) VALUES ('$user_name', '$password', '$first_name', '$last_name', '$user_email', '$user_add', '$user_tp', '$user_nic', '500')";
+    // Check if the username already exists
+    $existingUserQuery = "SELECT * FROM staff WHERE username = ?";
+    $stmt = $connection->prepare($existingUserQuery);
+    $stmt->bind_param("s", $user_name);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    $sql = "SELECT * FROM tbl_user_detail WHERE user_name = '$user_name'";
-    $result = $connection->query($sql);
-    $numrows = $result->num_rows;
-
-    if ($connection->query($insert_details) === TRUE && $numrows == 0) {
-        session_start();
-        $_SESSION['user_name'] = $user_name;
-        $_SESSION['password'] = $password;
-        $_SESSION['first_name'] = $first_name;
-        $_SESSION['last_name'] = $last_name;
-        $_SESSION['user_email'] = $user_email;
-        $_SESSION['user_add'] = $user_add;
-        $_SESSION['user_tp'] = $user_tp;
-        $_SESSION['user_nic'] = $user_nic;
-        $_SESSION['user_balance'] = $user_balance;
-
-        echo 'Data inserted';
-        header('Location: dashboard.php');
-        exit;
-    } elseif ($numrows > 0) {
-        echo '<div class="alert alert-danger"><span class="glyphicon glyphicon-remove"></span><strong> Error! Username already exists.</strong></div>';
+    if ($result->num_rows > 0) {
+        // echo '<div class="alert alert-danger"><span class="glyphicon glyphicon-remove"></span><strong> Error! Username already exists.</strong></div>';
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
     } else {
-        echo '<div class="alert alert-danger"><span class="glyphicon glyphicon-remove"></span><strong> Error! Please check all inputs.</strong></div>';
+        // Insert new user details
+        $insertQuery = "INSERT INTO staff (username, password, first_name, last_name, email, store_id, address_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $connection->prepare($insertQuery);
+        $stmt->bind_param("sssssii", $user_name, $password, $first_name, $last_name, $user_email, $store_id, $address_id);
+        
+        if ($stmt->execute()) {
+            session_start();
+            $_SESSION['username'] = $user_name;
+            // Store only necessary data in the session
+            $_SESSION['first_name'] = $first_name;
+            $_SESSION['last_name'] = $last_name;
+            $_SESSION['useremail'] = $user_email;
+            $_SESSION['store_id'] = $store_id;
+
+            echo 'Data inserted';
+            header('Location: dashboard.php');
+            exit;
+        } else {
+            // echo '<div class="alert alert-danger"><span class="glyphicon glyphicon-remove"></span><strong> Error! Please check all inputs.</strong></div>';
+            echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+        }
     }
 }
 
 $connection->close();
 ?>
+
+

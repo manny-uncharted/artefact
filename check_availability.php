@@ -3,7 +3,7 @@ require_once("dbcontroller.php");
 $db_handle = new DBController();
 
 if (!empty($_POST["user_name"])) {
-  $query = "SELECT count(*) FROM tbl_user_detail WHERE user_name=?";
+  $query = "SELECT count(*) FROM staff WHERE username=?";
   $stmt = $db_handle->prepareQuery($query);
   $stmt->bind_param("s", $_POST["user_name"]);
   $stmt->execute();

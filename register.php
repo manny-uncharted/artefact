@@ -3,7 +3,7 @@ session_start();
 $hostname = "localhost";
 $username = "root";
 $password = "";
-$database = "";
+$database = "sakila-movie-db";
 
 $conn = mysqli_connect($hostname, $username, $password, $database);
 
@@ -12,19 +12,16 @@ if (!$conn) {
 }
 
 if (isset($_POST['submit'])) {
-    $user_name = $_POST['user_name'];
+    $username = $_POST['user_name'];
     $password = $_POST['password'];
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
-    $user_email = $_POST['user_email'];
-    $user_add = $_POST['user_add'];
-    $user_tp = $_POST['user_tp'];
-    $user_nic = $_POST['user_nic'];
+    $email = $_POST['user_email'];
 
-    $sql = "INSERT INTO users (user_name, password, first_name, last_name, user_email, user_add, user_tp, user_nic) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO staff (username, password, first_name, last_name, email) VALUES (?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($conn, $sql);
 
-    mysqli_stmt_bind_param($stmt, "ssssssss", $user_name, $password, $first_name, $last_name, $user_email, $user_add, $user_tp, $user_nic);
+    mysqli_stmt_bind_param($stmt, "sssss", $username, $password, $first_name, $last_name, $email);
     mysqli_stmt_execute($stmt);
 
     mysqli_stmt_close($stmt);
@@ -34,6 +31,7 @@ if (isset($_POST['submit'])) {
 
 mysqli_close($conn);
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -128,30 +126,6 @@ mysqli_close($conn);
                     <label>Enter Email</label>
                     <div class="input-group">
                         <input type="email" class="form-control" id="user_email" name="user_email" placeholder="Enter Email" required>
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Address</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="user_add" name="user_add" placeholder="Enter Address" required>
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Contact Number</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="user_tp" name="user_tp" placeholder="Enter Contact Number"  required>
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>NIN Number</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="user_nic" name="user_nic" placeholder="Enter NIC Number" required>
                         <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
                     </div>
                 </div>

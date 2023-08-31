@@ -10,7 +10,7 @@ include('nav.php');
 $hostname = "localhost";
 $username = "root";
 $password = "";
-$database = "artefact";
+$database = "sakila-movie-db";
 
 $connection = new mysqli($hostname, $username, $password, $database);
 

@@ -3,7 +3,7 @@ class DBController {
   private $host = "localhost";
   private $user = "root";
   private $password = "";
-  private $database = "artefact";
+  private $database = "sakila-movie-db";
   private $conn;
 
   function __construct() {

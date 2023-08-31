@@ -16,7 +16,7 @@
 $host = "localhost";
 $user = "root";
 $password = "";
-$database = "artefact";
+$database = "sakila-movie-db";
 
 $connection = new mysqli($host,$user,$password, $database);
 
@@ -48,44 +48,44 @@ $connection = new mysqli($host,$user,$password, $database);
          
       </form>
       
-	  <?php
-		require_once("dbcontroller.php");
-		if (isset($_POST['submit']))
-		{
-			$user_name = $_POST['user_name'];
-			$password = $_POST['password'];	
-
-			// Create a new instance of DBController
-			$db = new DBController();
-
-			$select_user= "select count(user_id) as log,user_id,user_name,first_name,last_name,user_email,user_add,user_tp,user_nic,user_balance from tbl_user_detail where user_name = '$user_name' and password = '$password'";
-
-			$result = $db->runQuery($select_user);
-
-			$row = $result[0];
-
-			if($row['log']==1)
+		<?php
+			require_once("dbcontroller.php");
+			if (isset($_POST['submit']))
 			{
-				session_start();
-				$_SESSION['user_id'] = $row['user_id'];
-				$_SESSION['user_name'] = $row['user_name'];
-				$_SESSION['first_name'] = $row['first_name'];
-				$_SESSION['last_name'] = $row['last_name'];
-				$_SESSION['user_email'] = $row['user_email'];
-				$_SESSION['user_add'] = $row['user_add'];
-				$_SESSION['user_tp'] = $row['user_tp'];
-				$_SESSION['user_nic'] = $row['user_nic'];
-				$_SESSION['user_balance'] = $row['user_balance'];
+				$user_name = $_POST['user_name'];
+				$password = $_POST['password'];    
 
-				echo '<BR>You are logged in';
-				header('Location: dashboard.php');	
+				// Create a new instance of DBController
+				$db = new DBController();
+
+				$select_user= "SELECT COUNT(staff_id) AS log, staff_id, username, first_name, last_name, email, address_id, store_id, active FROM staff WHERE username = '$user_name' AND password = '$password'";
+
+				$result = $db->runQuery($select_user);
+
+				$row = $result[0];
+
+				if($row['log']==1)
+				{
+					session_start();
+					$_SESSION['staff_id'] = $row['staff_id'];
+					$_SESSION['username'] = $row['username'];
+					$_SESSION['first_name'] = $row['first_name'];
+					$_SESSION['last_name'] = $row['last_name'];
+					$_SESSION['email'] = $row['email'];
+					$_SESSION['address_id'] = $row['address_id'];
+					$_SESSION['store_id'] = $row['store_id'];
+					$_SESSION['active'] = $row['active'];
+
+					echo '<BR>You are logged in';
+					header('Location: dashboard.php');    
+				}
+				else
+				{
+					echo '<BR>Incorrect Combination';
+				}
 			}
-			else
-			{
-				echo '<BR>Incorrect Combination';
-			}
-		}
-	?>
+		?>
+
 
 		 
     

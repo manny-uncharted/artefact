@@ -31,7 +31,7 @@
                     <tbody>
                       <tr>
                         <td>Username:</td>
-                        <td><?php echo $_SESSION['user_name'];?></td>
+                        <td><?php echo $_SESSION['username'];?></td>
                       </tr>
                       <tr>
                         <td>First Name:</td>
@@ -42,25 +42,9 @@
                         <td><?php echo $_SESSION['last_name'];?></td>
                       </tr>
                       <tr>
-                        <td>NIC Number</td>
-                        <td><?php echo $_SESSION['user_nic'];?></td>
-                      </tr>
-                      <tr>
-                        <td>Address</td>
-                        <td><?php echo $_SESSION['user_add'];?></td>
-                      </tr>
-                      <tr>
                         <td>Email</td>
-                        <td><?php echo $_SESSION['user_email'];?></td>
+                        <td><?php echo $_SESSION['useremail'];?></td>
                       </tr>
-                      <tr>
-                        <td>Contact Number</td>
-                        <td><?php echo $_SESSION['user_tp'];?></td>
-                      </tr>     
-                      <tr>
-                        <td>Account Balance</td>
-                        <td><?php echo $_SESSION['user_balance'];?>Rs</td>
-                      </tr> 
                      
                     </tbody>
                   </table>
