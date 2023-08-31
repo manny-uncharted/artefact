@@ -17,7 +17,7 @@ if (!$conn) {
 
 include('nav.php');
 
-$deleteuser = $_SESSION['user_name'];
+$deleteuser = $_SESSION['username'];
 
 if (isset($_POST['delete'])) {
     $sql = "DELETE FROM staff WHERE username = ?";
