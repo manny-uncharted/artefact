@@ -40,7 +40,7 @@
         <input type="text" id="user_name" name="user_name" class="form-control" placeholder="Username">
 			<br/>
         <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="password" name="password" class="form-control" placeholder="Password">
+        <input type="password" id="first_name" name="first_name" class="form-control" placeholder="Password">
                         
         <div class="checkbox">
         <label><input type="checkbox" value="remember-me">Remember me</label>
@@ -51,10 +51,11 @@
          
       </form>
       
-      <?php
+        <?php
+            session_start();
             if (isset($_POST['submit'])) {
                 $user_name = $_POST['user_name'];
-                $password = $_POST['password'];
+                $firstname = $_POST['first_name'];
 
                 // Prepare the SQL query
                 $stmt = $connection->prepare("SELECT * FROM staff WHERE username = ?");
@@ -72,10 +73,9 @@
 
                     if ($result->num_rows > 0) {
                         $row = $result->fetch_assoc();
-                        $hashed_password = password_needs_rehash($password, PASSWORD_DEFAULT);
 
-                        // Verify the password
-                        if(password_verify($hashed_password, $row['password'])) {
+                        // Verify the first_name
+                        if($firstname == $row['first_name']) {
                             // Set session variables
                             $_SESSION['staff_id'] = $row['staff_id']; 
                             $_SESSION['username'] = $row['username'];

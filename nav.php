@@ -31,7 +31,7 @@ session_start();
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="dashboard.php"><?php echo $_SESSION['first_name'];?>'s Dashboard</a></li>
+            <li><a href="dashboard.php"><?php echo $_SESSION['last_name'];?>'s Dashboard</a></li>
             <li><a href="profile.php">Profile</a></li>
             <li><a href="settings.php">Settings</a></li>
             <li><a href="logout.php">Logout</a></li>
