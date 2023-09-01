@@ -11,18 +11,21 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<link rel="stylesheet" type="text/css" href="style/login.css"> 
-<?php
 
-$host = "localhost";
-$user = "root";
-$password = "";
-$database = "sakila-movie-db";
+    <?php
+        // Database connection details
+        $host = "localhost";
+        $user = "root";
+        $password = "";
+        $database = "sakila-movie-db";
 
-$connection = new mysqli($host,$user,$password, $database);
+        // Create a new mysqli instance
+        $connection = new mysqli($host, $user, $password, $database);
 
-// mysql_select_db($database,$connection);
-
-?>
+        if ($connection->connect_error) {
+            die("Connection failed: " . $connection->connect_error);
+        }
+    ?>
     
 </head>
 
@@ -48,43 +51,61 @@ $connection = new mysqli($host,$user,$password, $database);
          
       </form>
       
-		<?php
-			require_once("dbcontroller.php");
-			if (isset($_POST['submit']))
-			{
-				$user_name = $_POST['user_name'];
-				$password = $_POST['password'];    
+      <?php
+            if (isset($_POST['submit'])) {
+                $user_name = $_POST['user_name'];
+                $password = $_POST['password'];
 
-				// Create a new instance of DBController
-				$db = new DBController();
+                // Prepare the SQL query
+                $stmt = $connection->prepare("SELECT * FROM staff WHERE username = ?");
 
-				$select_user= "SELECT COUNT(staff_id) AS log, staff_id, username, first_name, last_name, email, address_id, store_id, active FROM staff WHERE username = '$user_name' AND password = '$password'";
+                if (!$stmt) {
+                    echo "Prepare failed: (" . $connection->errno . ") " . $connection->error;
+                }
 
-				$result = $db->runQuery($select_user);
+                // Bind the username to the query
+                $stmt->bind_param("s", $user_name);
 
-				$row = $result[0];
+                // Execute the query
+                if ($stmt->execute()) {
+                    $result = $stmt->get_result();
 
-				if($row['log']==1)
-				{
-					session_start();
-					$_SESSION['staff_id'] = $row['staff_id'];
-					$_SESSION['username'] = $row['username'];
-					$_SESSION['first_name'] = $row['first_name'];
-					$_SESSION['last_name'] = $row['last_name'];
-					$_SESSION['email'] = $row['email'];
-					$_SESSION['address_id'] = $row['address_id'];
-					$_SESSION['store_id'] = $row['store_id'];
-					$_SESSION['active'] = $row['active'];
+                    if ($result->num_rows > 0) {
+                        $row = $result->fetch_assoc();
+                        $hashed_password = password_needs_rehash($password, PASSWORD_DEFAULT);
 
-					echo '<BR>You are logged in';
-					header('Location: dashboard.php');    
-				}
-				else
-				{
-					echo '<BR>Incorrect Combination';
-				}
-			}
-		?>
+                        // Verify the password
+                        if(password_verify($hashed_password, $row['password'])) {
+                            // Set session variables
+                            $_SESSION['staff_id'] = $row['staff_id']; 
+                            $_SESSION['username'] = $row['username'];
+                            $_SESSION['first_name'] = $row['first_name'];
+                            $_SESSION['last_name'] = $row['last_name'];
+                            $_SESSION['email'] = $row['email'];
+                            $_SESSION['address_id'] = $row['address_id'];
+                            $_SESSION['store_id'] = $row['store_id'];
+                            $_SESSION['active'] = $row['active'];
+                            // ... set other session variables ...
+
+                            echo '<br>You are logged in';
+                            header('Location: dashboard.php');
+                        } else {
+                            echo '<br>Incorrect Combination';
+                        }
+                    } else {
+                        echo '<br>Incorrect Combination';
+                    }
+                } else {
+                    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+                }
+            }
+        ?>
+
+
+
+
+
+
 
 
 		 

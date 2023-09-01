@@ -13,7 +13,8 @@ if (!$conn) {
 
 if (isset($_POST['submit'])) {
     $username = $_POST['user_name'];
-    $password = $_POST['password'];
+    // Hash the password
+    $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
     $email = $_POST['user_email'];
@@ -21,7 +22,8 @@ if (isset($_POST['submit'])) {
     $sql = "INSERT INTO staff (username, password, first_name, last_name, email) VALUES (?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($conn, $sql);
 
-    mysqli_stmt_bind_param($stmt, "sssss", $username, $password, $first_name, $last_name, $email);
+    // Use hashed password instead of plain text
+    mysqli_stmt_bind_param($stmt, "sssss", $username, $hashed_password, $first_name, $last_name, $email);
     mysqli_stmt_execute($stmt);
 
     mysqli_stmt_close($stmt);
@@ -31,6 +33,7 @@ if (isset($_POST['submit'])) {
 
 mysqli_close($conn);
 ?>
+
 
 
 <!DOCTYPE html>
